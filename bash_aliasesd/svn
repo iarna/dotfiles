@@ -1,9 +1,9 @@
 if which svn > /dev/null; then
 	function svn () {
 		CMD=$1
-		if [ -x "~/svn-bin/svn-$CMD" ]; then
+		if [ -x ~/svn-bin/"svn-$CMD" ]; then
 			shift
-			"~/svn-bin/svn-$CMD" "$@"
+			~/svn-bin/"svn-$CMD" "$@"
 		elif which "svn-$CMD" > /dev/null; then
 			shift
 			"svn-$CMD" "$@"

@@ -10,13 +10,13 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-if [ -d "~/.bashrcd" ]; then
+if [ -d ~/.bashrcd ]; then
 	for a in ~/.bashrcd/*[^~]; do
 		. "$a"
 	done
 fi
 
-if [ -d "~/.bash_aliasesd" ]; then
+if [ -d ~/.bash_aliasesd ]; then
 	for a in ~/.bash_aliasesd/*[^~]; do
 		. "$a"
 	done
