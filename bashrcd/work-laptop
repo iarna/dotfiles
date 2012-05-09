@@ -5,6 +5,7 @@ if [ `hostname -s` == hadrbd-vip02 ]; then
 	export pcs=$pc/server
 	export MH=$mh
 	export SF_ROOT_DIR=$mh
-	source ~/perl5/perlbrew/etc/bashrc
-	export PATH=/sw/bin:/sw/sbin:`perl -E'$ENV{PATH}=~s{/sw/bin:/sw/swbin:}{};say $ENV{PATH}'`
+	if [ -e "~/perl5/perlbrew/etc/bashrc" ]; then
+		source ~/perl5/perlbrew/etc/bashrc
+	fi
 fi

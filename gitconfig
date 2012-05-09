@@ -11,5 +11,12 @@
 	helper = cache --timeout 864000
 [alias]
 	co = checkout
+	cd = checkout
 [format]
         pretty = format:%C(yellow)%h%C(reset) %s
+[difftool "Kaleidoscope"]
+        cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
+[difftool]
+        prompt = false
+[diff]
+        tool = Kaleidoscope
