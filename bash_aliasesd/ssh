@@ -1,0 +1,3 @@
+if [ ! -x $(which ssh-copy-id) ]; then
+	alias ssh-copy-id='sh ~/bin/ssh-copy-id.sh'
+fi

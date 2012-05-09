@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/bin/svn diff --diff-cmd diff -x '-iwBdu --strip-trailing-cr' $@ | diff-colorize | less -ReX
