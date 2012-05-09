@@ -1,6 +1,10 @@
 [ -z "$PS1" ] && return
 
-source /etc/bash.bashrc
+if [ -f /etc/bash.bashrc ]; then
+	. /etc/bash.bashrc
+elif [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases

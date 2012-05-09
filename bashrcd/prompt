@@ -13,7 +13,7 @@ else
     color_prompt=
 fi
 
-if [ -n "$(which git)" ]; then
+if [ -n "$(which git)" -a "$(type -t __git_ps1)" == function ]; then
 	GIT_PS1_SHOWDIRTYSTATE=1
 
 	# A function that returns the current git branch, suitable for embedding in a prompt
