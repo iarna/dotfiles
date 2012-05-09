@@ -13,7 +13,7 @@ else
     color_prompt=
 fi
 
-if [ -z $("type -t __git_ps1") -a -f /usr/local/git/contrib/completion/git-completion.bash ]; then
+if [ -z "$(type -t __git_ps1)" -a -f /usr/local/git/contrib/completion/git-completion.bash ]; then
 	. /usr/local/git/contrib/completion/git-completion.bash
 fi
 
