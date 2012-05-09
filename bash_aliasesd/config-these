@@ -1,2 +1,9 @@
 alias cpanm='cpanm -nS --skip-installed'
 alias less='less -ReX'
+
+alias dir='ls -l'
+
+if [ -x "$(which dircolors)" ]; then
+	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	alias ls='ls --color=auto'
+fi

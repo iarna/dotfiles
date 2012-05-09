@@ -13,6 +13,7 @@
 "\e[7~":beginning-of-line
 "\e[8~":end-of-line
 
-# My preferred history search keys
+# This lets you search backward and forward in history with meta-p and meta-n...
+# Once upon a time, I used to prefer this to Ctrl-R
 "\ep": history-search-backward
 "\en": history-search-forward

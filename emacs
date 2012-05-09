@@ -72,6 +72,9 @@
 (setq auto-mode-alist (cons '("\\pl\\'" . cperl-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\cgi\\'" . cperl-mode) auto-mode-alist))
 ;(setq hscroll-global-mode 1)
+
+; Add joe-type keybindings, based on wordstar
+
 (load-library "ws-mode")
 (setq joe-C-k-map (make-keymap))
 (setq joe-C-c-map (make-keymap))
