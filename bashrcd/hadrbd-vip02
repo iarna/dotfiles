@@ -1,0 +1,10 @@
+if [ `hostname -s` == hadrbd-vip02 ]; then
+	export mh=~/prototype/trunk/MHBangV4
+	export pc=~/PaymentCore/trunk
+	export pcc=$pc/client/php
+	export pcs=$pc/server
+	export MH=$mh
+	export SF_ROOT_DIR=$mh
+	source ~/perl5/perlbrew/etc/bashrc
+	export PATH=/sw/bin:/sw/sbin:`perl -E'$ENV{PATH}=~s{/sw/bin:/sw/swbin:}{};say $ENV{PATH}'`
+fi
