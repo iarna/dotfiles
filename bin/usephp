@@ -1,0 +1,7 @@
+#!/bin/sh
+VER=${1-5.2}
+echo "Switching to PHP $VER" 1>&2
+PATH=`perl -E'say join ":", "/opt/php/'$VER'/bin", grep {!m{/opt/php/\d+\.\d+/bin}} split /:/, $ENV{PATH}'`
+export PATH
+ln -fs `which php` /usr/local/bin/php
+echo export PATH=$PATH

@@ -1,0 +1,3 @@
+if [ -d "/Applications/GIMP.app" ]; then
+	alias gimp="open -a /Applications/GIMP.app"
+fi

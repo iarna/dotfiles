@@ -1,0 +1,4 @@
+# Regexp fragments that will be joined with |s
+# Lines beginning with a # will be removed
+^[.]
+[.]md$

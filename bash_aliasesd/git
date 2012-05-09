@@ -1,0 +1,8 @@
+alias co='git checkout'
+alias rebase='git rebase'
+alias branch='git branch'
+alias add='git add'
+alias commit='git commit'
+alias reset='git reset'
+alias del-branch='git del-branch'
+alias publish-branch='git publish-branch'

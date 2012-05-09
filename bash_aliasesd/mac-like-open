@@ -1,0 +1,4 @@
+open="$(which gnome-open)"
+if [ -x "$open" ]; then
+	alias open="$open"
+fi

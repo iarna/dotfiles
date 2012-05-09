@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Term::ANSIColor qw( :constants );
+
+$|=1;
+
+my $diff;
+if ( @ARGV ) {
+    open $diff, "-|", @ARGV
+        or die "Error running ".join(' ',@ARGV).": $!\n";
+}
+else {
+    $diff = \*STDIN;
+}
+
+while (<$diff>) {
+    s/^-{3} .*/BOLD.RED.$&.RESET/e or
+    s/^\+{3} .*/BOLD.GREEN.$&.RESET/e or
+    s/^-.*/RED.$&.RESET/e or
+    s/^\+.*/GREEN.$&.RESET/e or
+    s/^===+/BOLD.YELLOW.$&.RESET/e;
+    s/^Index.*/BOLD.YELLOW.$&.RESET/e;
+    print;
+}

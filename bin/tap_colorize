@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Term::ANSIColor qw( :constants );
+
+$|=1;
+
+while (<>) {
+    s/^#.*/BOLD.BLUE.$&.RESET/e;
+    s/^ok \d+ # TODO.*/YELLOW.$&.RESET/e;
+    s/^ok \d+/BOLD.GREEN.$&.RESET/e;
+    s/^not ok \d+.*/BOLD.RED.$&.RESET/e;
+#    s/^ Looks like everything went fine.*/BOLD.ON_GREEN.$&.RESET/e;
+    s/^All tests successful.*/BOLD.GREEN.$&.RESET/e;
+    print;
+}

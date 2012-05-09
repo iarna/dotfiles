@@ -1,0 +1,10 @@
+function total () {
+        unset $_total
+        while read num; do
+		if [ ."$num" != "." ]; then
+	                _total=$[$_total+$num]
+		fi
+        done
+        echo $_total
+        unset _total
+}

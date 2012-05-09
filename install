@@ -1,0 +1,61 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+	DRYRUN=true
+elif [ "$1" == "now" ]; then
+	DRYRUN=false
+else
+	echo "Form: $0 [now]" 1>&2
+	echo "By default, install will print out a list of what it would do." 1>&2
+	echo "If you pass \"now\" as an argument, it will copy the files from" 1>&2
+	echo "this repository into your home directory." 1>&2
+	exit 1
+fi
+
+function run-cmd () {
+	if [ "$DRYRUN" == "true" ]; then
+		echo "$@"
+	else
+		$@
+	fi
+}
+
+function update-home () {
+	FILE="$1"
+	PREFIX="$2"
+	if [ -d "$FILE" ]; then
+		git ls-files "$FILE" | grep -v "$ignorere" | while read toinst; do
+			update-home "$toinst" "$PREFIX"
+		done
+	else
+		install_dir=$(dirname "${PREFIX}${FILE}")
+		if [ ! -d "$install_dir" ]; then
+			run-cmd mkdir -v -p "$install_dir"
+		fi
+		run-cmd cp -v -a "$FILE" "${PREFIX}${FILE}"
+	fi
+}
+
+# We always ignore ourselves
+extra_ignore_re="^install$"
+
+# Plus we ignore any directories flagged as non-dot
+for a in $(cat .non-dot-dirs); do
+	extra_ignore_re="$extra_ignore_re\|"
+	extra_ignore_re="$extra_ignore_re^$a/"
+done
+
+# Plus anything in .installignore, which we strip comments from
+# and join with pipes
+ignorere="$((grep -v '^#' .installignore; echo $extra_ignore_re) | perl -e 'print join q{\|}, grep {!/^$/} map {chomp;$_} <>')"
+
+# Then we tell it to install our contents as dotfiles
+update-home . ~/.
+
+# Plus the contents of our non_dot_dirs
+for non_dot_dir in $(cat .non-dot-dirs); do
+	if [ -d $non_dot_dir ]; then
+		pushd $non_dot_dir
+		update-home . ~/$non_dot_dir/
+		popd
+	fi
+done
