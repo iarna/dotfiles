@@ -1,0 +1,1 @@
+export GIT_EXEC_PATH=~/git-bin:`git --exec-path`
