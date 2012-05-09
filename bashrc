@@ -10,8 +10,12 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
+if [ -z "$BASH_COMPLETION" ]; then
+	if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+		. /etc/bash_completion
+	elif [ -d /etc/bash_completion.d ]; then
+		. ~/.base_bash_completion
+	fi
 fi
 
 if [ -d ~/.bashrcd ]; then
