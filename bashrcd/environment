@@ -1,0 +1,4 @@
+export EDITOR="joe"
+export VISUAL="joe"
+export CVS_RSH=ssh
+export CPAN=ftp://ftp.cpan.org/CPAN
