@@ -23,7 +23,7 @@ if [ -n "$(which git)" -a -n "$(type -t __git_ps1)" ]; then
 
 	# A function that returns the current git branch, suitable for embedding in a prompt
 	function current_branch {
-	    branch_prompt=`__git_ps1 "[%s] "`
+	    branch_prompt="$(__git_ps1 '[%s] ')"
 	    branch_color=
 	    branch_reset=
 	    local w

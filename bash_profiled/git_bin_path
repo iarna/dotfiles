@@ -1,1 +1,1 @@
-export GIT_EXEC_PATH=~/git-bin:`git --exec-path`
+export GIT_EXEC_PATH=~/git-bin:"$(git --exec-path)"

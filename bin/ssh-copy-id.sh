@@ -4,7 +4,7 @@ if [ -z "$HOST" ]; then
 	echo "Form: $0 hostname"
 	exit 1
 fi
-KEY=`find .ssh/id_rsa.pub .ssh/id_dsa.pub | head -1`
+KEY=$(find .ssh/id_rsa.pub .ssh/id_dsa.pub | head -1)
 if [ -z "$KEY" ]; then
 	echo "No key detected, generating..."
 	ssh-keygen && exec $0 $@

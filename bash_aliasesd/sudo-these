@@ -1,2 +1,2 @@
-alias pear='sudo `which pear`'
-alias pyrus='sudo `which pyrus`'
+alias pear='sudo $(which pear)'
+alias pyrus='sudo $(which pyrus)'

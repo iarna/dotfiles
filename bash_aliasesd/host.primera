@@ -1,4 +1,0 @@
-if [ `hostname -s` == primera ]; then
-	alias pyrus='sudo `which pyrus`'
-	alias pear='sudo /opt/php/5.2/bin/pear'
-fi
