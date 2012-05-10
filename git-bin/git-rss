@@ -49,9 +49,8 @@ print << "EORSS";
   <ttl>60</ttl>
 EORSS
 
-my $link = $remotes{'upstream'}{'fetch'} || $remotes{'origin'}{'fetch'};
-if ( defined $link ) {
-    print "  <link>".html_escape($link)."</link>\n";
+if ( exists $remotes{'origin'}{'fetch'} ) {
+    print "  <link>".html_escape($remotes{'origin'}{'fetch'})."</link>\n";
 }
 
 my $items = oexec qw( git rss-items ), @ARGV;
