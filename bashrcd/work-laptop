@@ -1,11 +1,12 @@
-if [ `hostname -s` == hadrbd-vip02 ]; then
-	export mh=~/prototype/trunk/MHBangV4
-	export pc=~/PaymentCore/trunk
-	export pcc=$pc/client/php
-	export pcs=$pc/server
-	export MH=$mh
-	export SF_ROOT_DIR=$mh
-	if [ -e "~/perl5/perlbrew/etc/bashrc" ]; then
-		source ~/perl5/perlbrew/etc/bashrc
-	fi
+[ `hostname -s` != hadrbd-vip02 ] && return
+
+export mh=~/prototype/trunk/MHBangV4
+export pc=~/PaymentCore/trunk
+export pcc=$pc/client/php
+export pcs=$pc/server
+export MH=$mh
+export SF_ROOT_DIR=$mh
+
+if [ -e "~/perl5/perlbrew/etc/bashrc" ]; then
+	source ~/perl5/perlbrew/etc/bashrc
 fi

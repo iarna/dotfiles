@@ -1,7 +1,7 @@
-if [ `hostname -s` == "hadrbd-vip02" ]; then
-	alias mh="cd $MH"
-	alias pc="cd $pc"
-	alias pcc="cd $pcc"
-	alias pcs="cd $pcs"
-	alias sl='cd ~/prototype/trunk/OLBSL/php'
-fi
+[ `hostname -s` != "hadrbd-vip02" ] && return
+
+alias mh="cd $MH"
+alias pc="cd $pc"
+alias pcc="cd $pcc"
+alias pcs="cd $pcs"
+alias sl='cd ~/prototype/trunk/OLBSL/php'
