@@ -1,0 +1,61 @@
+#!/usr/bin/env perl
+use common::sense;
+use autodie;
+use Cwd;
+
+my $cwd = getcwd();
+my ($min,$hour,$day,$mon,$year,$dow) = (localtime())[1..6];
+
+## Todo: Use a locale aware module to look these up
+my %monmap = (
+    mon   =>1, tue    =>2, wed      =>3, thu     =>4, fri   =>5, sat     =>6, sun   =>7,
+    monday=>1, tuesday=>2, wednesday=>3, thursday=>4, friday=>5, saturday=>6, sunday=>7
+    );
+my %schedule = (
+   minute => "*",
+   hour   => "*",
+   day    => "*",
+   month  => "*",
+   dow    => "*" );
+
+my @program;
+
+while (defined( my $next = shift @ARGV )) {
+    my $amount = 1;
+    if ( $next =~ /^\d+$/ ) {
+        $amount = $next;
+        $next = shift;
+    }
+    given ($next) {
+        when ([qw( min mins minute minutes )]) {
+            @schedule{qw( minute )}          = ("*/$amount");
+        }
+        when ([qw( hour hours              )]) {
+            @schedule{qw( minute hour)}      = ($min, "*/$amount");
+        }
+        when ([qw( day days                )]) {
+            @schedule{qw( minute hour day )} = ($min,$hour,"*/$amount");
+        }
+        when ([qw( week weeks )]) {
+            die "Don't know how to iterate less then once a week but more then once a month.\n" if $amount > 1;
+            @schedule{qw( minute hour dow )} = ($min,$hour,$dow);
+        }
+        when (\%monmap) {
+            @schedule{qw( minute hour dow )} = ($min,$hour,$monmap{$next});
+        }
+        when ([qw( month months )]) {
+            @schedule{qw( minute hour day month )} = ($min,$hour,$day,"*/$amount");
+        }
+        default {
+            @program = ($next,@ARGV);
+            last;
+        }
+    }
+}
+my $program = join ' ', @program;
+my $crontab = qq[$schedule{minute} $schedule{hour} $schedule{day} $schedule{month} $schedule{dow} cd "$cwd"; $program];
+say $crontab;
+open my $cron, "|-", "crontab";
+print $cron qx{crontab -l 2> /dev/null};
+say $cron $crontab;
+close $cron;

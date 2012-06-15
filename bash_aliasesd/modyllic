@@ -1,11 +1,11 @@
 function sqldump () {
-	command sqldump </dev/null "$@" | sqlcolorize | less -REX
+	command sqldump </dev/null "$@" | sqlcolorize | less -ReX
 }
 
 function sqldiff () {
-	command sqldiff </dev/null "$@" | sqlcolorize | less -REX
+	command sqldiff </dev/null "$@" | sqlcolorize | less -ReX
 }
 
 function sqldrop () {
-	command sqldrop </dev/null "$@" | sqlcolorize | less -REX
+	command sqldrop </dev/null "$@" | sqlcolorize | less -ReX
 }
