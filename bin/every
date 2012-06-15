@@ -19,14 +19,13 @@ my %schedule = (
    dow    => "*" );
 
 my @program;
-
-while (defined( my $next = shift @ARGV )) {
+while (@ARGV) {
     my $amount = 1;
-    if ( $next =~ /^\d+$/ ) {
-        $amount = $next;
-        $next = shift;
-    }
-    given ($next) {
+    given (shift) {
+        when (/^\d+$/) {
+            ($amount,$_) = ($_,shift);
+            continue;
+        }
         when ([qw( min mins minute minutes )]) {
             @schedule{qw( minute )}          = ("*/$amount");
         }
@@ -41,19 +40,20 @@ while (defined( my $next = shift @ARGV )) {
             @schedule{qw( minute hour dow )} = ($min,$hour,$dow);
         }
         when (\%monmap) {
-            @schedule{qw( minute hour dow )} = ($min,$hour,$monmap{$next});
+            @schedule{qw( minute hour dow )} = ($min,$hour,$monmap{$_});
         }
         when ([qw( month months )]) {
             @schedule{qw( minute hour day month )} = ($min,$hour,$day,"*/$amount");
         }
         default {
-            @program = ($next,@ARGV);
+            @program = ($_,@ARGV);
             last;
         }
     }
 }
-my $program = join ' ', @program;
-my $crontab = qq[$schedule{minute} $schedule{hour} $schedule{day} $schedule{month} $schedule{dow} cd "$cwd"; $program];
+my $crontab = join ' ',
+    qq[$schedule{minute} $schedule{hour} $schedule{day} $schedule{month} $schedule{dow} cd "$cwd";],
+    @program;
 say $crontab;
 open my $cron, "|-", "crontab";
 print $cron qx{crontab -l 2> /dev/null};
