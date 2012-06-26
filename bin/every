@@ -2,6 +2,19 @@
 use common::sense;
 use autodie;
 use Cwd;
+use List::MoreUtils qw( apply );
+use Digest::MD5 qw( md5_hex );
+
+sub help {
+    warn "Form: $0 [-l] ([num] unit)... program\n";
+    warn "-l   - Add locking so that more then one copy can't run at once.\n";
+    warn "--dry-run\n";
+    warn "-n   - Don't actually install the crontab\n";
+    warn "num  - Number of the unit, defaults to 1\n";
+    warn "unit - min(ute)(s), hour(s), day(s), week(s), month(s)\n";
+    warn "       or the name of a day of week, eg tue(sday)\n";
+    exit(1);
+}
 
 my $cwd = getcwd();
 my ($min,$hour,$day,$mon,$year,$dow) = (localtime())[1..6];
@@ -17,10 +30,25 @@ my %schedule = (
    month  => "*",
    dow    => "*" );
 
+my $lock    = 0;
+my $dry_run = 0;
 my @program;
 while (@ARGV) {
     my $amount = 1;
     given (shift) {
+        when ('--') {
+            @program = @ARGV;
+            last;
+        }
+        when ('-l') {
+            $lock = 1;
+        }
+        when ([qw( -n --dry-run )]) {
+            $dry_run = 1;
+        }
+        when (/^-/) {
+            help();
+        }
         when (/^\d+$/) {
             ($amount,$_) = ($_,shift);
             continue;
@@ -50,11 +78,23 @@ while (@ARGV) {
         }
     }
 }
-my $crontab = join ' ',
-    qq[$schedule{minute} $schedule{hour} $schedule{day} $schedule{month} $schedule{dow} cd "$cwd";],
-    @program;
+unless (@program) {
+    help();
+}
+unshift @program, qq[cd "$cwd"; ];
+
+if ($lock) {
+    my $lockfile = "/tmp/every_lock_" .
+       join '_',@schedule{qw( minute hour day month dow )}, @program;
+    @program = ("[ ! -f $lockfile -o ! -d /proc/\$(cat $lockfile) ] && ( echo \$\$ > $lockfile ;", @program, " ; rm $lockfile )");
+}
+
+my $crontab = join ' ',  @schedule{qw( minute hour day month dow )}, @program;
 say $crontab;
-open my $cron, "|-", "crontab";
-print $cron qx{crontab -l 2> /dev/null};
-say $cron $crontab;
-close $cron;
+
+unless ($dry_run) {
+    open my $cron, "|-", "crontab";
+    print $cron qx{crontab -l 2> /dev/null};
+    say $cron $crontab;
+    close $cron;
+}
