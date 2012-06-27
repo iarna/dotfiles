@@ -1,0 +1,3 @@
+if [ -d /opt/perl6/bin ]; then
+	export PATH=/opt/perl6/bin:"$PATH"
+fi
