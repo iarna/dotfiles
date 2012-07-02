@@ -19,11 +19,21 @@ function run-cmd () {
 	fi
 }
 
+if [ -x "$(which git)" ]; then
+	function findfiles() {
+		git ls-files "$@"
+	}
+else
+	function findfiles() {
+		find "$@" -mindepth 1 -maxdepth 1 | cut -b 3-
+	}
+fi
+
 function update-home () {
 	FILE="$1"
 	PREFIX="$2"
 	if [ -d "$FILE" ]; then
-		git ls-files "$FILE" | grep -v "$ignorere" | while read toinst; do
+		findfiles "$FILE" | grep -v "$ignorere" | while read toinst; do
 			update-home "$toinst" "$PREFIX"
 		done
 	else
