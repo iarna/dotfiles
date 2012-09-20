@@ -1,0 +1,24 @@
+#!/bin/sh
+VERSION=5.16.1
+echo "Installing Perlbrew in /opt/perl5 for system use"
+export PERLBREW_ROOT=/opt/perl5
+curl -kL http://xrl.us/perlbrewinstall | bash
+echo "Installing perl-$VERSION"
+perlbrew install perl-$VERSION
+echo "Adding Perlbrew to system bashrc\n";
+echo 'source /opt/perl5/etc/bashrc' > /etc/profile.d/perlbrew.sh
+
+perlbrew use perl-$VERSION
+echo "Installing/updating cpanm\n";
+perlbrew install_cpanm
+echo "Adding cpanm alias to system bashrc\n";
+echo 'alias cpanm="cpanm -S"' > /etc/profile.d/cpanm.sh
+echo "Updating dual life modules to the latest from the CPAN"
+cpan-outdated | cpanm -S
+
+source /opt/perl5/etc/bashrc
+
+echo "Perl install complete, to make perl-$VERSION the new default perl, type:"
+echo "    perlbrew switch perl-$VERSION"
+echo "To use it only in the current shell, type:"
+echo "    perlbrew use perl-$VERSION"

@@ -3,3 +3,12 @@ if [ -x "$(which usephp)" ]; then
 		eval $(sudo "$(which usephp)" $@)
 	}
 fi
+if [ -x "$(which switchphp)" ]; then
+	function switchphp () {
+		eval $(sudo "$(which switchphp)" $@)
+	}
+	if [ -f ~/.phpenv ]; then
+		source ~/.phpenv
+		export PATH=`perl -E'say join ":", "'$PHPPATH'", grep {!m{/opt/php/\d+\.\d+/bin}} split /:/, $ENV{PATH}'`
+	fi
+fi

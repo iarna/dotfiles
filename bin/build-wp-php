@@ -1,0 +1,38 @@
+if [ ! -e php5.spec ]; then
+	echo "This must be run from a PHP5 source directory" 1>&2
+	exit 1
+fi
+VERSION=5.4-re-becca
+
+./configure \
+    --prefix=/opt/php/$VERSION \
+    --disable-all \
+    --disable-cgi \
+    --with-config-file-scan-dir=/opt/php/$VERSION/cfg \
+    --enable-fpm \
+    --with-fpm-user=re-becca \
+    --with-fpm-group=re-becca \
+    --with-pcre-regex \
+    --enable-json \
+    --enable-xml \
+    --with-zlib \
+    --enable-hash \
+    --enable-simplexml \
+    --with-iconv \
+    --enable-libxml \
+    --enable-dom \
+    --enable-xmlreader \
+    --enable-tokenizer \
+    --with-mysql \
+    --enable-mysqlnd \
+    --with-curl \
+    --with-openssl \
+    --enable-soap \
+    --enable-sockets \
+    --enable-ftp \
+    --enable-filter \
+    --enable-mbstring \
+    --enable-ctype \
+    --with-pear
+
+# sudo pecl install ssh2

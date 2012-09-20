@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+VER=${1-5.2}
+echo "Switching to PHP $VER" 1>&2
+PHPPATH="/opt/php/$VER/bin"
+USEPHP="$PHPPATH/php"
+PATH=`perl -E'say join ":", "'$PHPPATH'", grep {!m{/opt/php/\d+\.\d+/bin}} split /:/, $ENV{PATH}'`
+
+echo 'export PHPPATH="'$PHPPATH'"'   > $HOME/.phpenv
+echo 'export USEPHP="'$USEPHP'"'    >> $HOME/.phpenv
+echo 'alias php="'$USEPHP'"'        >> $HOME/.phpenv
+
+echo 'export PATH="'$PATH'"'
+echo 'export PHPPATH="'$PHPPATH'"'
+echo 'export USEPHP="'$USEPHP'"'
+echo 'alias php="'$USEPHP'"'

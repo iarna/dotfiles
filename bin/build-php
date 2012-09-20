@@ -1,0 +1,41 @@
+if [ ! -e php5.spec ]; then
+	echo "This must be run from a PHP5 source directory" 1>&2
+	exit 1
+fi
+if grep -q 'PHP X\.Y' UPGRADING; then
+	VERSION=git
+	SPL=
+	MYSQL=--with-pdo-mysql
+elif grep -q 'PHP 5\.4' UPGRADING; then
+	VERSION=5.4
+	SPL=
+	MYSQL=--with-pdo-mysql
+elif grep -q 'PHP 5\.3' UPGRADING; then
+	VERSION=5.3
+	SPL= # No longer needed, always included
+	MYSQL=--with-pdo-mysql # =mysqlnd
+else
+	VERSION=5.2
+	SPL=--enable-spl
+	MYSQL=--with-pdo-mysql
+fi
+
+
+./configure \
+    --prefix=/opt/php/$VERSION \
+    --disable-all \
+    --disable-cgi --enable-debug \
+    --with-pear --enable-xml --enable-libxml --enable-simplexml --enable-xmlreader --enable-xmlwriter \
+    --with-zlib \
+    --enable-tokenizer \
+    --with-config-file-scan-dir=/opt/php/$VERSION/cfg \
+    --enable-pdo \
+    $MYSQL --with-pdo-pgsql --with-sqlite3 --with-pdo-sqlite \
+    --with-pcre-regex \
+    --enable-phar \
+    --enable-dom \
+    --enable-json \
+    --enable-hash \
+    --with-iconv \
+    --enable-posix \
+    $SPL

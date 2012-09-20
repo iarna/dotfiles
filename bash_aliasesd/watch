@@ -1,0 +1,3 @@
+if [ ! -x $(which watch) ]; then
+	alias watch='sh ~/bin/watch.sh'
+fi
