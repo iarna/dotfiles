@@ -18,6 +18,10 @@ if [ -z "$(type -t __git_ps1)" -a -f /usr/local/git/contrib/completion/git-compl
 	. /usr/local/git/contrib/completion/git-completion.bash
 fi
 
+if [ -z "$(type -t __git_ps1)" -a -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]; then
+	. /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh
+fi
+
 if [ -n "$(which git)" -a -n "$(type -t __git_ps1)" ]; then
 	GIT_PS1_SHOWDIRTYSTATE=1
 
