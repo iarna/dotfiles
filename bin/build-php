@@ -1,4 +1,4 @@
-if [ ! -e php5.spec ]; then
+if [ ! -e php5.spec.in ]; then
 	echo "This must be run from a PHP5 source directory" 1>&2
 	exit 1
 fi
