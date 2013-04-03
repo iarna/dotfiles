@@ -1,4 +1,4 @@
-if [ $(hostname -s) == hadrbd-vip02 ]; then
+if [ $(hostname -s) == Rebeccas-MacBook-Pro ]; then
 	export mh=~/prototype/trunk/MHBangV4
 	export pc=~/PaymentCore/trunk
 	export pcc=$pc/client/php

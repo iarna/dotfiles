@@ -1,4 +1,4 @@
-if [ "$(hostname -s)" == "hadrbd-vip02" ]; then
+if [ "$(hostname -s)" == "Rebeccas-MacBook-Pro" ]; then
 	alias mh="cd $MH"
 	alias pc="cd $pc"
 	alias pcc="cd $pcc"
