@@ -1,7 +1,11 @@
 #!/bin/bash
+INSTALLTO=~
 if [ -z "$1" ]; then
 	DRYRUN=true
 elif [ "$1" == "now" ]; then
+	DRYRUN=false
+elif [[ "$1" =~ / ]]; then
+	INSTALLTO="$@"
 	DRYRUN=false
 else
 	echo "Form: $0 [now]" 1>&2
@@ -49,13 +53,13 @@ done
 ignorere="$((grep -v '^#' .installignore; echo $extra_ignore_re) | perl -e 'print join q{\|}, grep {!/^$/} map {chomp;$_} <>')"
 
 # Then we tell it to install our contents as dotfiles
-update-home . ~/.
+update-home . "$INSTALLTO/."
 
 # Plus the contents of our non_dot_dirs
 for non_dot_dir in $(cat .non-dot-dirs); do
 	if [ -d $non_dot_dir ]; then
 		pushd $non_dot_dir
-		update-home . ~/$non_dot_dir/
+		update-home . "$INSTALLTO/$non_dot_dir/"
 		popd
 	fi
 done
