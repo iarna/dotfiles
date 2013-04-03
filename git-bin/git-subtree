@@ -1,0 +1,57 @@
+#!/bin/bash
+dosetup() {
+	local src targ
+	src=$1  ; shift
+	targ=$1 ; shift
+	if [ -z "$targ" ]; then
+		echo "git subtree setup <source> <target>"
+		echo "source is in the form, remote/branch:path"
+		echo "    Remote and/or branch is required.  Path is always optional"
+		echo "target is the path in your project, relative to the root, that you want to"
+		echo "setup source into."
+		exit;
+	fi
+	if [[ "$src" =~ ":" ]]; then
+		branch="$(echo $src | cut -d: -f1)"
+	else
+		branch="$src"
+	fi
+	set -e
+	git setup -s ours --no-commit "$branch"
+	git read-tree --prefix="$targ" -u "$src"
+	git commit -m "Subtree merge branch '$src' into '$targ'"
+}
+
+dopull() {
+	local remote branch
+	remote=$1 ; shift
+	branch=$1 ; shift
+	set -e
+	if [ -z "$branch"]; then
+		echo "git subtree pull [remote] branch"
+		exit 1
+	fi
+	git pull -s subtree "$remote" "$branch"
+}
+
+domerge() {
+	local remote branch
+	remote=$1 ; shift
+	branch=$1 ; shift
+	set -e
+	if [ -z "$remote"]; then
+		echo "git subtree pull [remote] branch"
+		exit 1
+	fi
+	git merge -s subtree "$remote"
+}
+
+cmd=$1 ; shift
+
+case "$cmd" in
+	setup)	dosetup "$@" ;;
+	merge)  domerge "$@" ;;
+	pull)	dopull "$@" ;;
+	*)
+		echo "git subtree [setup|pull]"
+esac
