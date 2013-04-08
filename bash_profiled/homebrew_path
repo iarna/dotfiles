@@ -1,6 +1,7 @@
 if [ -n "$(which brew 2>/dev/null)" ]; then
 	PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 	PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+	MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
 	source "$(brew --prefix git)"/etc/bash_completion.d/git-completion.bash
 	source "$(brew --prefix git)"/etc/bash_completion.d/git-prompt.sh
 fi
