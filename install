@@ -1,5 +1,6 @@
 #!/bin/bash
-INSTALLTO=~
+INSTALLTO=~/.etc
+FINAL=~
 if [ -z "$1" ]; then
 	DRYRUN=true
 elif [ "$1" == "now" ]; then
@@ -19,23 +20,29 @@ function run-cmd () {
 	if [ "$DRYRUN" == "true" ]; then
 		echo "$@"
 	else
-		$@
+		"$@"
 	fi
 }
 
 function update-home () {
 	FILE="$1"
-	PREFIX="$2"
+	PREFIXGIT="$2"
+	PREFIXFINAL="$3"
 	if [ -d "$FILE" ]; then
 		git ls-files "$FILE" | grep -v "$ignorere" | while read toinst; do
-			update-home "$toinst" "$PREFIX"
+			update-home "$toinst" "$PREFIXGIT" "$PREFIXFINAL"
 		done
 	else
-		install_dir=$(dirname "${PREFIX}${FILE}")
-		if [ ! -d "$install_dir" ]; then
-			run-cmd mkdir -v -p "$install_dir"
+		prefix_dir=$(dirname "${PREFIXGIT}${FILE}")
+		final_dir=$(dirname "${PREFIXFINAL}${FILE}")
+		if [ ! -d "$prefix_dir" ]; then
+			run-cmd mkdir -v -p "$prefix_dir"
 		fi
-		run-cmd cp -v -a "$FILE" "${PREFIX}${FILE}"
+		if [ ! -d "$final_dir" ]; then
+			run-cmd mkdir -v -p "$final_dir"
+		fi
+		run-cmd cp -v -a "$FILE" "${PREFIXGIT}${FILE}"
+		run-cmd ln -f -s "${PREFIXGIT}${FILE}" "${PREFIXFINAL}${FILE}"
 	fi
 }
 
@@ -52,14 +59,24 @@ done
 # and join with pipes
 ignorere="$((grep -v '^#' .installignore; echo $extra_ignore_re) | perl -e 'print join q{\|}, grep {!/^$/} map {chomp;$_} <>')"
 
+if [ -n $INSTALLTO ]; then
+	run-cmd mkdir $INSTALLTO
+	run-cmd git init $INSTALLTO
+fi
+
 # Then we tell it to install our contents as dotfiles
-update-home . "$INSTALLTO/."
+update-home . "$INSTALLTO/." "$FINAL/."
 
 # Plus the contents of our non_dot_dirs
 for non_dot_dir in $(cat .non-dot-dirs); do
 	if [ -d $non_dot_dir ]; then
 		pushd $non_dot_dir
-		update-home . "$INSTALLTO/$non_dot_dir/"
+		update-home . "$INSTALLTO/$non_dot_dir/" "$FINAL/$non_dot_dir/"
 		popd
 	fi
 done
+
+pushd $INSTALLTO
+run-cmd git add -A .
+run-cmd git commit -m'"New install"'
+popd
