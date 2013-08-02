@@ -6,6 +6,10 @@ if grep -q 'PHP X\.Y' UPGRADING; then
 	VERSION=git
 	SPL=
 	MYSQL=--with-pdo-mysql
+elif grep -q 'PHP 5\.5' UPGRADING; then
+	VERSION=5.5
+	SPL=
+	MYSQL=--with-pdo-mysql
 elif grep -q 'PHP 5\.4' UPGRADING; then
 	VERSION=5.4
 	SPL=
