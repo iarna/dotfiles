@@ -20,5 +20,3 @@
         prompt = false
 [log]
 	date = short
-[diff]
-        tool = Kaleidoscope
