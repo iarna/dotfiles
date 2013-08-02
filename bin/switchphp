@@ -9,6 +9,8 @@ PATH=`perl -E'say join ":", "'$PHPPATH'", grep {!m{/opt/php/\d+\.\d+/bin}} split
 echo 'export PHPPATH="'$PHPPATH'"'   > $HOME/.phpenv
 echo 'export USEPHP="'$USEPHP'"'    >> $HOME/.phpenv
 echo 'alias php="'$USEPHP'"'        >> $HOME/.phpenv
+ln -s -f "$USEPHP" /usr/local/bin/php
+ln -s -f "$PHPPATH/pear" /usr/local/bin/pear
 
 echo 'export PATH="'$PATH'"'
 echo 'export PHPPATH="'$PHPPATH'"'
