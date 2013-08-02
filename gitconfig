@@ -13,10 +13,12 @@
 	co = checkout
 	cd = checkout
 [format]
-        pretty = format:%C(yellow)%h%C(reset) %s
+	pretty = format:%C(yellow)%h%C(reset)%w(110,0,8)%C(green)%d%C(reset) %s%w(0) %C(bold black)(%cN on %cd)%C(reset)
 [difftool "Kaleidoscope"]
         cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
 [difftool]
         prompt = false
+[log]
+	date = short
 [diff]
         tool = Kaleidoscope
