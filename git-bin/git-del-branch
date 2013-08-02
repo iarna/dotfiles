@@ -4,4 +4,4 @@ if [ -z "$1" ]; then
 	exit 1;
 fi
 git branch -D $1 && \
-git push origin :$1
+( git branch -r -d origin/$1 ; git push origin :$1 )
