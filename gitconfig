@@ -21,3 +21,5 @@
 	default = upstream
 [mailmap]
 	file = /Users/bturner/.mailmap
+[rerere]
+	enabled = true
