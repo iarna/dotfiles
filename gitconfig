@@ -12,7 +12,7 @@
 [alias]
 	co = checkout
 [format]
-	pretty = format:%C(yellow)%h%C(reset)%w(110,0,8)%C(green)%d%C(reset) %s%w(0) %C(bold black)(%cN on %cd)%C(reset)
+	pretty = format:%C(yellow)%h%C(reset)%w(110,0,8)%C(green)%d%C(reset) %s%w(0) %C(bold black)(%aN on %ad)%C(reset)
 [difftool]
         prompt = false
 [log]
