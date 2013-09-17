@@ -2,7 +2,7 @@
 	name = Rebecca Turner
 	email = turner@mikomi.org
 [color]
-	ui = true
+	ui = auto
 	interactive = auto
 	branch = auto
 [credential "https://github.com"]
