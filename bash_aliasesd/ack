@@ -1,0 +1,3 @@
+if which ack-grep 2>&1>/dev/null; then
+	alias ack=ack-grep
+fi
