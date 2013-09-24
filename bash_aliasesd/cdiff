@@ -1,0 +1,3 @@
+function cdiff {
+    diff -u $@ | diff-colorize | less -REX
+}
