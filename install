@@ -46,6 +46,12 @@ function update-home () {
 	fi
 }
 
+function post-install () {
+	if [ -d ssh ]; then
+		run-cmd chmod go-rwx -R "$INSTALLTO/.ssh"
+	fi
+}
+
 # We always ignore ourselves
 extra_ignore_re="^install$"
 
@@ -75,6 +81,9 @@ for non_dot_dir in $(cat .non-dot-dirs); do
 		popd
 	fi
 done
+
+# Run our post install steps, mostly perm changes
+post-install
 
 pushd $INSTALLTO
 run-cmd git add -A .
