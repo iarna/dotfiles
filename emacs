@@ -3,8 +3,6 @@
   ;; Your init file should contain only one such instance.
  '(auto-compression-mode t nil (jka-compr))
  '(case-fold-search t)
- '(current-language-environment "Japanese")
- '(default-input-method "japanese")
  '(global-font-lock-mode t nil (font-lock))
  '(show-paren-mode t nil (paren))
  '(transient-mark-mode t)
@@ -23,7 +21,6 @@
  '(cperl-pod-head-face (quote font-lock-variable-name-face))
  '(scrollbars-visible-p t)
  '(cperl-extra-newline-before-brace-multiline nil)
- '(user-mail-address "turner@nani.mikomi.org")
  '(cperl-auto-newline nil)
  '(cperl-message-electric-keyword nil)
 )
