@@ -23,3 +23,7 @@
 	file = /Users/bturner/.mailmap
 [rerere]
 	enabled = true
+[merge]
+	conflictstyle = diff3
+[apply]
+	whitespace = fix
