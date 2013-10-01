@@ -70,6 +70,10 @@ if [ -n $INSTALLTO ]; then
 	run-cmd git init $INSTALLTO
 fi
 
+pushd $INSTALLTO
+run-cmd git stash
+popd
+
 # Then we tell it to install our contents as dotfiles
 update-home . "$INSTALLTO/." "$FINAL/."
 
@@ -88,4 +92,5 @@ post-install
 pushd $INSTALLTO
 run-cmd git add -A .
 run-cmd git commit -m'"New install"'
+run-cmd git stash pop
 popd
