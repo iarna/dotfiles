@@ -39,7 +39,7 @@
  '(cperl-pod-face ((((type x) (class color)) (:background "#000060"))))
  '(cperl-nonoverridable-face ((((class color) (background dark)) (:bold t))))
  '(list-mode-item-selected ((t (:foreground "black" :background "gray68"))) t)
- '(font-lock-comment-face ((((class color) (background dark)) (:foreground "#dfdfdf" :background "#151560"))))
+ '(font-lock-comment-face ((((class color) (background dark)) (:foreground "#333333" :background "black"))))
  '(font-lock-other-type-face ((t nil)) t)
  '(cperl-array-face ((t (:foreground "#ffafaf"))))
  '(font-lock-keyword-face ((nil nil)))
@@ -56,7 +56,8 @@
  '(cperl-hash-face ((t (:foreground "#afffff"))))
  '(paren-mismatch ((t (:foreground "black" :background "DeepPink"))) t)
 )
-; cperl-mode is fun. It's even more fun in HairyMode! Yay!
+
+; Prefer cperl mode
 
 (load-library "cperl-mode")
 (autoload 'perl-mode "cperl-mode" "alternate mode for editing Perl programs" t)
@@ -64,7 +65,7 @@
 (setq cperl-font-lock t)
 (define-key global-map [M-S-down-mouse-3] 'imenu)
 
-; Oh! I don't want help to appear when I hit Backspace!
+; Terminal emulator fixup nonsense
 
 (global-set-key [?\C-o] 'yank)
 (global-set-key [?\M-o] 'yank-pop)
