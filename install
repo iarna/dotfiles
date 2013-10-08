@@ -18,7 +18,7 @@ fi
 
 function run-cmd () {
 	if [ "$DRYRUN" == "true" ]; then
-		echo "$@"
+		echo "  > $@"
 	else
 		"$@"
 	fi
@@ -29,7 +29,7 @@ function update-home () {
 	PREFIXGIT="$2"
 	PREFIXFINAL="$3"
 	if [ -d "$FILE" ]; then
-		git ls-files "$FILE" | grep -v "$ignorere" | while read toinst; do
+		git ls-files "$FILE" | sort | grep -v "$ignorere" | while read toinst; do
 			update-home "$toinst" "$PREFIXGIT" "$PREFIXFINAL"
 		done
 	else
@@ -41,8 +41,19 @@ function update-home () {
 		if [ ! -d "$final_dir" ]; then
 			run-cmd mkdir -v -p "$final_dir"
 		fi
-		run-cmd cp -v -a "$FILE" "${PREFIXGIT}${FILE}"
-		run-cmd ln -f -s "${PREFIXGIT}${FILE}" "${PREFIXFINAL}${FILE}"
+		if echo $FILE | grep -q '[.]patch$'; then
+			FULLPATH="$(pwd)/${FILE}"
+			pushd "${PREFIXGIT}" > /dev/null
+			run-cmd git apply "${FULLPATH}"
+			popd > /dev/null
+		elif echo $FILE | grep -q '[.]replace$'; then
+			FINALNAME="$(basename "${FILE}" .replace)"
+			run-cmd cp -v -a "$FILE" "${PREFIXGIT}${FINALNAME}"
+			run-cmd ln -f -s "${PREFIXGIT}${FINALNAME}" "${PREFIXFINAL}${FINALNAME}"
+		else
+			run-cmd cp -v -a "$FILE" "${PREFIXGIT}${FILE}"
+			run-cmd ln -f -s "${PREFIXGIT}${FILE}" "${PREFIXFINAL}${FILE}"
+		fi
 	fi
 }
 
