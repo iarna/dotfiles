@@ -102,6 +102,6 @@ post-install
 
 pushd $INSTALLTO
 run-cmd git add -A .
-run-cmd git commit -m'"New install"'
+run-cmd git commit -m"New install $(date "+%Y-%m-%d %H:%M:%S %Z")"
 run-cmd git stash pop
 popd
