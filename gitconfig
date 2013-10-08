@@ -27,3 +27,5 @@
 	conflictstyle = diff3
 [apply]
 	whitespace = fix
+[pull]
+	rebase = true
