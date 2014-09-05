@@ -17,7 +17,7 @@ elif grep -q 'PHP 5\.4' UPGRADING; then
 elif grep -q 'PHP 5\.3' UPGRADING; then
 	VERSION=5.3
 	SPL= # No longer needed, always included
-	MYSQL=--with-pdo-mysql # =mysqlnd
+	MYSQL=--with-pdo-mysql=mysqlnd
 else
 	VERSION=5.2
 	SPL=--enable-spl
@@ -34,12 +34,20 @@ fi
     --enable-tokenizer \
     --with-config-file-scan-dir=/opt/php/$VERSION/cfg \
     --enable-pdo \
-    $MYSQL --with-pdo-pgsql --with-sqlite3 --with-pdo-sqlite \
+    $MYSQL --with-sqlite3 --with-pdo-sqlite \
     --with-pcre-regex \
     --enable-phar \
     --enable-dom \
     --enable-json \
     --enable-hash \
+    --enable-ctype \
     --with-iconv \
     --enable-posix \
+    --enable-sockets \
+    --with-mcrypt \
+    --enable-pcntl \
+    --with-openssl \
+    --enable-mbstring
     $SPL
+
+#    --with-pdo-pgsql  \
