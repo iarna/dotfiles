@@ -7,10 +7,26 @@ $|=1;
 
 while (<>) {
     s/^#.*/BOLD.BLUE.$&.RESET/e;
-    s/^ok \d+ # TODO.*/YELLOW.$&.RESET/e;
-    s/^ok \d+/BOLD.GREEN.$&.RESET/e;
-    s/^not ok \d+.*/BOLD.RED.$&.RESET/e;
-#    s/^ Looks like everything went fine.*/BOLD.ON_GREEN.$&.RESET/e;
-    s/^All tests successful.*/BOLD.GREEN.$&.RESET/e;
+    s/^ok \d+ # TODO.*/YELLOW.$&.RESET/e or
+    s/^ok( \d+)?/BOLD.GREEN.$&.RESET/e or
+    s/^not ok \d+.*/BOLD.RED.$&.RESET/e or
+    s/ ok$/BOLD.GREEN.$&.RESET/e or
+    s/^\d+[.][.]\d+/BOLD.$&.RESET/e or
+    s/^All tests successful.*/BOLD.GREEN.$&.RESET/e or
+    s/Result: FAIL/BOLD.WHITE.ON_RED.$&.RESET/e or
+    s/Result: PASS/BOLD.GREEN.$&.RESET/e or
+    /TAP version \d+/ or
+    /^.+ [.][.]+\s*$/ or
+    /Test Summary Report/ or
+    /^Files=\d+, Tests=\d+/;
+    print;
+    last if /Test Summary Report/;
+}
+
+while (<>) {
+    s/Non-zero exit status: \d+/BOLD.WHITE.ON_RED.$&.RESET/e;
+    s/Parse errors: .*/BOLD.WHITE.ON_RED.$&.RESET/e;
+    s/Result: FAIL/BOLD.WHITE.ON_RED.$&.RESET/e;
+    s/Result: PASS/BOLD.GREEN.$&.RESET/e;
     print;
 }
