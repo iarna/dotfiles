@@ -1,12 +1,31 @@
 #!/bin/bash
 
-readonly VERSION="0.3.0"
+readonly VERSION="0.3.2"
 readonly DEFAULT_CIPHER="aes-256-ecb"
 
 [ -z "$GIT_DIR" ] && GIT_DIR=".git"
 
+_disable() {
+	git config --unset filter.encrypt.smudge
+	git config --unset filter.encrypt.clean
+	git config --unset diff.encrypt.textconv
+	echo "git-crypt filter disabled"
+}
+
+_enable() {
+	git config filter.encrypt.smudge "git crypt smudge"
+	git config filter.encrypt.clean "git crypt clean"
+	git config diff.encrypt.textconv "git crypt diff"
+	echo "git-crypt filter enabled"
+}
+
 init_config() {
 	local answer
+
+	# From git 1.7.8+, the .git in submodule folder is a file containing the actual path of gitdir.
+	if [ -f "$GIT_DIR" ]; then
+		GIT_DIR=`cat $GIT_DIR | sed 's/^gitdir: //'`
+	fi
 
 	if [ ! -d "$GIT_DIR" ]; then
 		echo "Directory is not a git repository. Did you forget to run 'git init'?"
@@ -42,7 +61,8 @@ init_config() {
 			case "$answer" in
 				n*|N*)
 					echo -n "Enter your passphrase: "
-					read PASS
+					read -s PASS
+					echo
 					;;
 				*)
 					PASS=$(cat /dev/urandom | LC_ALL="C" tr -dc '!@#$%^&*()_A-Z-a-z-0-9' | head -c32)
@@ -64,7 +84,7 @@ init_config() {
 
 		echo -e "\nThis configuration will be stored:\n"
 		echo "salt:   $SALT"
-		echo "pass:   $PASS"
+		echo "pass:   *****************"
 		echo "cipher: $CIPHER"
 		echo -e -n "\nDoes this look right? [Y/n] "
 		read answer
@@ -106,14 +126,12 @@ init_config() {
 	echo "    renormalize=true" >> $attrs
 
 	# Encryption
-	git config gitcrypt.salt "$SALT"
-	git config gitcrypt.pass "$PASS"
-	git config gitcrypt.cipher "$CIPHER"
+	git config git-crypt.salt "$SALT"
+	git config git-crypt.pass "$PASS"
+	git config git-crypt.cipher "$CIPHER"
 
 	# Filters
-	git config filter.encrypt.smudge "git crypt smudge"
-	git config filter.encrypt.clean "git crypt clean"
-	git config diff.encrypt.textconv "git crypt diff"
+	_enable
 }
 
 _clean() {
@@ -131,24 +149,76 @@ _diff() {
 	openssl enc -d -base64 -$CIPHER -k "$PASS" -in "$1" 2> /dev/null || cat "$1"
 }
 
+_crypthistory_impl() {
+	_disable
+	git reset --hard
+	git filter-branch --prune-empty --tree-filter "git crypt-filter $0 clean" -f
+	_enable
+	git reset --hard
+}
+
+_crypthistory() {
+	echo -n "You MUST run 'crypthistory' BEFORE any encrypted commits."
+	echo -n "Do you want to recrypt all history? This may corrut your data? [Y/n]"
+	read answer
+
+	case "$answer" in
+		n*|N*)
+			exit 0
+			;;
+		*)
+			echo "This may take a while depends on file sizes in repo..."
+			;;
+	esac
+
+	_crypthistory_impl
+}
+
+_decrypthistory() {
+	_disable
+	git reset --hard
+	git filter-branch --prune-empty --tree-filter "git crypt-filter $0 smudge" -f
+	_enable
+	git reset --hard
+}
+
+_recrypt() {
+	echo -n "Do you want to change password and recrypt repo with new one? [Y/n]"
+	read answer
+
+	case "$answer" in
+		n*|N*)
+			exit 0
+			;;
+		*)
+			echo -n "Enter your passphrase: "
+			read PASS
+			;;
+	esac
+
+	_decrypthistory
+	git config git-crypt.pass "$PASS"
+	_crypthistory_impl
+}
+
 case "$1" in
-	clean|smudge|diff)
+	clean|smudge|diff|enable|disable|crypthistory|decrypthistory|recrypt)
 		# Need a shared salt
-		SALT=$(git config gitcrypt.salt)
+		SALT=$(git config git-crypt.salt || git config gitcrypt.salt)
 		if [ -z "$SALT" ]; then
-			echo "Gitcrypt: shared salt (gitcrypt.salt) has not been configured"
+			echo "git-crypt: shared salt (git-crypt.salt) has not been configured"
 			exit 1
 		fi
 
 		# Need a secure passphrase
-		PASS=$(git config gitcrypt.pass)
+		PASS=$(git config git-crypt.pass || git config gitcrypt.pass)
 		if [ -z "$PASS" ]; then
-			echo "Gitcrypt: secure passphrase (gitcrypt.pass) has not been configured"
+			echo "git-crypt: secure passphrase (git-crypt.pass) has not been configured"
 			exit 1
 		fi
 
 		# And a cipher mode
-		CIPHER=$(git config gitcrypt.cipher)
+		CIPHER=$(git config git-crypt.cipher || git config gitcrypt.cipher)
 		[ -z "$CIPHER" ] && CIPHER="$DEFAULT_CIPHER"
 
 		# Execute command
@@ -165,9 +235,9 @@ case "$1" in
 	*)
 		# Not a valid option
     if [ -z "$1" ]; then
-      echo "Gitcrypt: available options: init, version"
+      echo "git-crypt: available options: init, version"
     else
-		  echo "Gitcrypt: command does not exist: $1"
+		  echo "git-crypt: command does not exist: $1"
     fi
 		exit 1
 		;;
