@@ -1,0 +1,6 @@
+ssh/* filter=encrypt diff=encrypt
+*.patch filter=encrypt diff=encrypt
+*.replace filter=encrypt diff=encrypt
+npmrc filter=encrypt diff=encrypt
+[merge]
+    renormalize=true
