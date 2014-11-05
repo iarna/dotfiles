@@ -1,7 +1,0 @@
-if [ "$(hostname -s)" == "Rebeccas-MacBook-Pro" ]; then
-	alias mh="cd $MH"
-	alias pc="cd $pc"
-	alias pcc="cd $pcc"
-	alias pcs="cd $pcs"
-	alias sl='cd ~/prototype/trunk/OLBSL/php'
-fi
