@@ -26,3 +26,5 @@ if [ -d ~/.bash_aliasesd ]; then
 		. "$a"
 	done
 fi
+
+export BASHRCLOADED=1

@@ -7,7 +7,7 @@ fi
 if [ -n "$BASH_VERSION" ]; then
     if [ -d ~/.bash_profiled ]; then
             for a in ~/.bash_profiled/*[^~]; do
-                    . $a
+                    [ -f "$a" ] && . "$a"
             done
     fi
 
