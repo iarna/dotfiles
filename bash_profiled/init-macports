@@ -1,5 +1,8 @@
 if [ -x /opt/local/bin/port ]; then
-	PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
+	export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 	source "/opt/local/share/git/contrib/completion/git-completion.bash"
 	source "/opt/local/share/git/contrib/completion/git-prompt.sh"
+fi
+if [ -d /opt/local/libexec/gnubin ]; then
+	export PATH="/opt/local/libexec/gnubin:$PATH"
 fi
