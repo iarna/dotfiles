@@ -1,3 +1,0 @@
-function php () {
-        command php </dev/null "$@"
-}
