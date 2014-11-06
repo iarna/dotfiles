@@ -1,5 +1,6 @@
 [ -z "$PS1" ] && return
 
+# Support both Debian/Ubuntu and OSX bashrc naming conventions
 if [ -f /etc/bash.bashrc ]; then
 	. /etc/bash.bashrc
 elif [ -f /etc/bashrc ]; then
