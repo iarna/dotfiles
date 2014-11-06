@@ -29,7 +29,7 @@ function update-home () {
 	PREFIXGIT="$2"
 	PREFIXFINAL="$3"
 	if [ -d "$FILE" ]; then
-		git ls-files "$FILE" | sort | grep -v "$ignorere" | while read toinst; do
+		git ls-files "$FILE" | sort | egrep -v "$ignorere" | while read toinst; do
 			update-home "$toinst" "$PREFIXGIT" "$PREFIXFINAL"
 		done
 	else
@@ -74,7 +74,7 @@ done
 
 # Plus anything in .installignore, which we strip comments from
 # and join with pipes
-ignorere="$((grep -v '^#' .installignore; echo $extra_ignore_re) | perl -e 'print join q{\|}, grep {!/^$/} map {chomp;$_} <>')"
+ignorere="$((grep -v '^#' .installignore; echo $extra_ignore_re) | perl -e 'print join q{|}, grep {!/^$/} map {chomp;$_} <>')"
 
 if [ -n $INSTALLTO ]; then
 	run-cmd mkdir $INSTALLTO
