@@ -219,26 +219,33 @@ A copy of [git-rss](https://github.com/iarna/git-rss), which generates an
 RSS feed from a git commit history.  Includes a full colorized diff for each
 commit.
 
-### .bash_profiled/git_bin_path
+### .bash_profiled/path-git-bin
 
 Adds `~/git-bin` to my GIT_EXEC_PATH
 
-### .bash_profiled/fink
-### .bash_profiled/homebrew_path
-### .bash_profiled/macports_path
+### .bash_profiled/init-fink
+### .bash_profiled/init-homebrew
+### .bash_profiled/init-macports
 
 If detected, sets up environment for fink, homebrew and macports. I've used
 all of them over the years.  Currently I'm using macports though.
 
-### .bash_profiled/nvm
+### .bash_profiled/init-nvm
 
 If we have a `~/.nvm` then this loads its config
 
-### .bash_aliasesd/mac-like-open
+### .bash_profiled/prompt
+
+Configures my prompt, which is a bog standard `user@hostname:path$ ` with
+standard `$` to `#` when root.  Except with colors and the addition of git
+information if the CWD is a git repo, at which point its
+`user@hostname:path$ [repoinfo] `.
+
+### .bash_aliasesd/open
 
 In gnome environments, aliases `open` to `gnome-open`.
 
-### .bash_aliasesd/ssh
+### .bash_aliasesd/ssh-copy-id
 
 Installs the ssh-copy-id polyfill
 
@@ -250,9 +257,9 @@ A small function for summing newline sparated lists of numbers
 
 Corrections for common typos of mine
 
-### .bash_aliasesd/unix-like-gimp
+### .bash_aliasesd/gimp
 
-Gives me a command-line tool like X11 gimp for opening image files in MacGimp.
+On OSX, aliases gimp to 'open -a /Applications/Gimp.app $@'
 
 ### .bash_aliasesd/watch
 
@@ -261,10 +268,3 @@ Installs the watch polyfill
 ### .bashrcd/history
 
 Configures my bash history-- I ignore duplicates and append to the history when starting.
-
-### .bashrcd/prompt
-
-Configures my prompt, which is a bog standard `user@hostname:path$ ` with
-standard `$` to `#` when root.  Except with colors and the addition of git
-information if the CWD is a git repo, at which point its
-`user@hostname:path$ [repoinfo] `.
