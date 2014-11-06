@@ -14,7 +14,7 @@ in the appropriate places.  It's configured by two dotfiles of its own:
 won't be installed, currently this is files that start with a period and
 files that end in `.md`.  `.non-dit-dirs` is a list of directories who
 shouldn't have their names prefixed with a dot when they're installed,
-currently bin, git-bin and svn-bin.
+currently bin and git-bin.
 
 The installer itself will create a ~/.etc git repository for you that holds
 actual copies of all of your dotfiles, named as they would be in your home
