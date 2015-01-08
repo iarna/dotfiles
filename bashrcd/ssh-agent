@@ -3,12 +3,12 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
 
 	function start_agent {
 		 echo "Initialising new SSH agent..."
-		 /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+		 ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
 		 echo succeeded
 		 chmod 600 "${SSH_ENV}"
 		 . "${SSH_ENV}" > /dev/null
-		 /usr/bin/ssh-add "$HOME/.ssh/id-personal-ed25519"
-		 /usr/bin/ssh-add "$HOME/.ssh/id-personal-rsa"
+		 ssh-add "$HOME/.ssh/id-personal-ed25519"
+		 ssh-add "$HOME/.ssh/id-personal-rsa"
 	}
 
 	# Source SSH settings, if applicable
