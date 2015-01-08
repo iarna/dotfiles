@@ -74,3 +74,5 @@ screen )
 *)
     ;;
 esac
+
+export PS1
