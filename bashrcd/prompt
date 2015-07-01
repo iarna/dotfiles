@@ -22,7 +22,7 @@ if [ -z "$(type -t __git_ps1)" -a -f /usr/local/opt/git/etc/bash_completion.d/gi
 	. /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh
 fi
 
-if which emojitiime 2>&1> /dev/null; then
+if which emojitime 2>&1> /dev/null; then
 	function current_emojitime {
 	  current_time="$(emojitime) "
 	}
