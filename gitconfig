@@ -1,6 +1,6 @@
 [user]
 	name = Rebecca Turner
-	email = turner@mikomi.org
+	email = me@re-becca.org
 [color]
 	ui = auto
 	interactive = auto
@@ -11,8 +11,11 @@
 	helper = cache --timeout 864000
 [alias]
 	co = checkout
+	zlog = log --topo-order --graph --decorate
+	slog = log --topo-order --graph --decorate --first-parent
 [format]
 	pretty = format:%C(yellow)%h%C(reset)%w(110,0,8)%C(green)%d%C(reset) %s%w(0) %C(bold black)(%aN on %ad)%C(reset)
+;	pretty = format:%C(yellow)%h%C(reset)%w(110,0,8)%C(green)%d%C(reset) %s%w(0) %C(bold black)(%aN <%aE> on %ad)%C(reset)
 [difftool]
         prompt = false
 [log]
@@ -24,6 +27,8 @@
 [merge]
 	conflictstyle = diff3
 [apply]
+	whitespace = fix
+[rebase]
 	whitespace = fix
 [pull]
 	rebase = true
