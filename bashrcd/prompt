@@ -22,11 +22,22 @@ if [ -z "$(type -t __git_ps1)" -a -f /usr/local/opt/git/etc/bash_completion.d/gi
 	. /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh
 fi
 
+if which emojitiime 2>&1> /dev/null; then
+	function current_emojitime {
+	  current_time="$(emojitime) "
+	}
+else
+	function current_emojitime {
+	  current_time=$(date +%H:%m)
+	}
+fi
+
 if [ -n "$(which git)" -a -n "$(type -t __git_ps1)" ]; then
 	GIT_PS1_SHOWDIRTYSTATE=1
 
 	# A function that returns the current git branch, suitable for embedding in a prompt
 	function current_branch {
+	    current_emojitime
 	    branch_prompt="$(__git_ps1 '[%s] ')"
 	    branch_color=
 	    branch_reset=
@@ -62,7 +73,7 @@ if [ -n "$(which git)" -a -n "$(type -t __git_ps1)" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\['$COLOR_LIGHT_GREEN'\]\u@\h\['$COLOR_RESET'\]:\['$COLOR_LIGHT_BLUE'\]\w\['$COLOR_RESET'\]\$ \[${branch_color}\]${branch_prompt}\[${branch_reset}\]'
+    PS1='${current_time} ${debian_chroot:+($debian_chroot)}\['$COLOR_LIGHT_GREEN'\]\u@\h\['$COLOR_RESET'\]:\['$COLOR_LIGHT_BLUE'\]\w\['$COLOR_RESET'\]\$ \[${branch_color}\]${branch_prompt}\[${branch_reset}\]'
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ ${branch_prompt}'
 fi
