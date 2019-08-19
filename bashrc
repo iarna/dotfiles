@@ -15,6 +15,12 @@ if [ -z "$BASHRCLOADED" ]; then
 		fi
 	fi
 
+	export NVS_HOME="$HOME/.nvs"
+	if [ -s "$NVS_HOME/nvs.sh" ]; then
+		. "$NVS_HOME/nvs.sh"
+		nvs use latest
+	fi
+
 	if [ -d ~/.bashrcd ]; then
 		for a in ~/.bashrcd/*[^~]; do
 			. "$a"
