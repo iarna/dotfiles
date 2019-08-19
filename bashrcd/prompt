@@ -14,14 +14,6 @@ else
     color_prompt=
 fi
 
-if [ -z "$(type -t __git_ps1)" -a -f /usr/local/git/contrib/completion/git-completion.bash ]; then
-	. /usr/local/git/contrib/completion/git-completion.bash
-fi
-
-if [ -z "$(type -t __git_ps1)" -a -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]; then
-	. /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh
-fi
-
 if which emojitime 2>&1> /dev/null; then
 	function current_emojitime {
 	  current_time="$(emojitime) "
@@ -63,7 +55,6 @@ if [ -n "$(which git)" -a -n "$(type -t __git_ps1)" ]; then
 		fi
 	    fi
 	}
-
 	if ( [ -z "$PROMPT_COMMAND" ]); then
 		PROMPT_COMMAND="current_branch";
 	else
