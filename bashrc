@@ -1,24 +1,27 @@
 [ -z "$PS1" ] && return
-
-# Support both Debian/Ubuntu and OSX bashrc naming conventions
-if [ -f /etc/bash.bashrc ]; then
-	. /etc/bash.bashrc
-elif [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
-
-if [ -z "$BASH_COMPLETION" ]; then
-	if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-		. /etc/bash_completion
-	elif [ -d /etc/bash_completion.d ]; then
-		. ~/.base_bash_completion
+if [ -z "$BASHRCLOADED" ]; then
+	# Support both Debian/Ubuntu and OSX bashrc naming conventions
+	if [ -f /etc/bash.bashrc ]; then
+		. /etc/bash.bashrc
+	elif [ -f /etc/bashrc ]; then
+		. /etc/bashrc
 	fi
-fi
 
-if [ -d ~/.bashrcd ]; then
-	for a in ~/.bashrcd/*[^~]; do
-		. "$a"
-	done
+	if [ -z "$BASH_COMPLETION" ]; then
+		if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+			. /etc/bash_completion
+		elif [ -d /etc/bash_completion.d ]; then
+			. ~/.base_bash_completion
+		fi
+	fi
+
+	if [ -d ~/.bashrcd ]; then
+		for a in ~/.bashrcd/*[^~]; do
+			. "$a"
+		done
+	fi
+
+	export BASHRCLOADED=1
 fi
 
 if [ -d ~/.bash_aliasesd ]; then
@@ -26,5 +29,3 @@ if [ -d ~/.bash_aliasesd ]; then
 		. "$a"
 	done
 fi
-
-export BASHRCLOADED=1
